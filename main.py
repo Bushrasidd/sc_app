@@ -52,12 +52,15 @@ def save_sc(path, hash_temp):
                 
                         print(f"hash_temp : {hash_temp}") 
                 else:
-                    print("unexpected error")              
+                    print("unexpected error")
+                    return hash_temp              
                     
             except Exception as e:
                 print(f"\n Error opening or saving the image from the path: {e}")
+                return hash_temp
     else:
         print("No image found on clipboard")
+        return hash_temp
 
 def create_folder_and_save_sc(path, hash_temp):
     try:
