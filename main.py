@@ -39,7 +39,7 @@ def save_sc(path, hash_temp):
 
                 if hash_temp == hashed_file:
                     print("hash and temp are same so we are returning")
-                    return
+                    return hash_temp
                 
                 elif hash_temp != hashed_file:
                         print(f"hash_file : {hashed_file}")
@@ -49,6 +49,7 @@ def save_sc(path, hash_temp):
                         print("image saved successfully")
                         hash_temp = hashed_file
                         return hash_temp
+                
                         print(f"hash_temp : {hash_temp}") 
                 else:
                     print("unexpected error")              
@@ -61,18 +62,20 @@ def save_sc(path, hash_temp):
 def create_folder_and_save_sc(path, hash_temp):
     try:
         if not os.path.exists(path):
-            os.mkdir(path)
+            os.mkdir(path, hash_temp)
             print("folder created successfully")
         else:
             print("Folder already exist")
-        save_sc(path, hash_temp)
+        hash_temp = save_sc(path, hash_temp)
+        print(f"preserved the value successfully: {hash_temp}")
         print(f"Performed action with path: {path}")
+        return hash_temp
     except Exception as e:
         print(e)
 
 def background_task(path, hash_temp):
     while True:
-        create_folder_and_save_sc(path, hash_temp)
+        hash_temp = create_folder_and_save_sc(path, hash_temp)
         time.sleep(10)
 
 background_task(path, hash_temp)
