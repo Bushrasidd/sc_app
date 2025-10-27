@@ -38,7 +38,7 @@ def save_sc(path, hash_temp):
                 print(f"Hash_temp value : {hash_temp}")
 
                 if hash_temp == hashed_file:
-                    print("hash and temp are same so we are returning")
+                    print("Screenshot is same as previous!! no need to store")
                     return hash_temp
                 
                 elif hash_temp != hashed_file:
