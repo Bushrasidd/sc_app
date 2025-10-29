@@ -6,6 +6,7 @@ import hashlib
 import io
 
 
+
 directory = "C:/Users/Bushra"
 folder_name = "Screenshots"
 path = os.path.join(directory, folder_name)
@@ -75,6 +76,7 @@ def create_folder_and_save_sc(path, hash_temp):
         return hash_temp
     except Exception as e:
         print(e)
+        return hash_temp
 
 def background_task(path, hash_temp):
     while True:
