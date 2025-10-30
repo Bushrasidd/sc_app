@@ -3,12 +3,17 @@ from tkinter import messagebox, filedialog
 import random
 from main import background_task
 import os
+import threading
 
 
 
 directory = os.path.expanduser('~')
 folder_name = "Screenshots"
 path = os.path.join(directory, folder_name)
+hash_temp = None
+
+current_path = path
+stop_flag = threading.Event()
 
 
 # Create window
@@ -41,16 +46,17 @@ status_label.pack(pady=5)
 
 # Button click event
 def choose_directory():
+    global current_path
     if_directory = filedialog.askdirectory(title="Select Folder to Save Screenshots")
     if if_directory:
-        status_label.config(text=f"Directory chosen: {directory}", fg="green")
-        messagebox.showinfo("Yay!", f"Directory set to:\n{directory}")
+        current_path = if_directory
+        status_label.config(text=f"Directory chosen: {if_directory}", fg="green")
+        messagebox.showinfo("Yay!", f"Directory set to:\n{if_directory}")
         # root.sel_dir = directory
-        path_1 = os.path.join(if_directory, folder_name)
-        background_task(root, path_1)
     else:
+        path_1 = path
         status_label.config(text="No directory selected 😿", fg="red")
-        background_task(root, path)
+
     
 
 
@@ -70,5 +76,17 @@ choose_btn.grid(row=0, column=0, padx=5)
 surprise_btn = tk.Button(button_frame, text="😺 Surprise Me!", command=surprise_me, font=("Arial", 11, "bold"), bg="honeydew", fg="black", relief="ridge")
 surprise_btn.grid(row=0, column=1, padx=5)
 
+thread = threading.Thread(target=background_task, args=(current_path, hash_temp, stop_flag), daemon=True)
+thread.start()
+
+
+def on_close():
+    stop_flag.set()
+    root.destroy()
+
+root.protocol("WM_DELETE_WINDOW", on_close)
+
+
+
 # Run app
-# root.mainloop()
+root.mainloop()
