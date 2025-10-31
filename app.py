@@ -4,6 +4,7 @@ import random
 from main import background_task
 import os
 import threading
+import sys
 
 
 
@@ -12,13 +13,23 @@ folder_name = "Screenshots"
 path = os.path.join(directory, folder_name)
 hash_temp = None
 
-current_path = path
+current_path = [path]
 stop_flag = threading.Event()
 
 
 # Create window
 root = tk.Tk()
-root.iconbitmap(default='cat.ico')  # optional, use your cat icon
+
+
+if getattr(sys, 'frozen', False):
+    icon_path = os.path.join(sys._MEIPASS, 'cat.ico')
+else:
+    icon_path = 'cat.ico'
+
+try:
+    root.iconbitmap(default=icon_path)
+except:
+    pass  
 root.title("Purrfect Screenshot App 🐾")
 root.geometry("420x320")
 root.config(bg="mint cream")
@@ -46,15 +57,12 @@ status_label.pack(pady=5)
 
 # Button click event
 def choose_directory():
-    global current_path
     if_directory = filedialog.askdirectory(title="Select Folder to Save Screenshots")
     if if_directory:
-        current_path = if_directory
+        current_path[0] = if_directory
         status_label.config(text=f"Directory chosen: {if_directory}", fg="green")
-        messagebox.showinfo("Yay!", f"Directory set to:\n{if_directory}")
         # root.sel_dir = directory
     else:
-        path_1 = path
         status_label.config(text="No directory selected 😿", fg="red")
 
     

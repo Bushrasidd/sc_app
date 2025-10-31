@@ -97,7 +97,7 @@ def create_folder_and_save_sc(current_path, hash_temp):
 
 def background_task(current_path, hash_temp,stop_flag):
     while not stop_flag.is_set():
-        hash_temp = create_folder_and_save_sc(current_path, hash_temp)
+        hash_temp = create_folder_and_save_sc(current_path[0], hash_temp)
         time.sleep(10)
 
 
